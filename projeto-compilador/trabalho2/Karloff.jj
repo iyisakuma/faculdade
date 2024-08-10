@@ -1,0 +1,105 @@
+PARSER_BEGIN(Karloff)
+import java.io.*;
+public class Karloff {
+
+  public static void main(String args[]) throws ParseException,IOException {
+    
+ Karloff analisador = new Karloff(new FileInputStream(args[0]));
+ analisador.Karloff();
+  }
+
+}
+
+PARSER_END(Karloff)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+TOKEN :
+{
+  <MAIN: "main">
+| <APARENTESES: "(">
+| <FPARENTESES: ")">
+| <ACHAVES: "{">
+| <FCHAVES: "}">
+| <PONTO_VIRGULA: ";">
+| <ATTR: "=">
+| <VOID: "void">
+| <FLOAT: "float">
+| <BOOLEAN: "boolean">
+| <RETURN: "return">
+| <WHILE: "while">
+| <FUNCTION:"fun">
+| <IF: "if">
+| <SOMA: "+">
+| <SUB: "-">
+| <MULT: "*">
+| <DIV: "/">
+| <AND: "&" >
+| <OR: "|">
+| <MENORQ: "<">
+| <MAIORQ: ">">
+| <EQUAL: "==">
+| <TRUE: "true">
+| <FALSE: "false">
+| <VIRGULA: ",">
+}
+
+TOKEN :
+{
+  <NUM : (["0"-"9"])+("."(["0"-"9"])+ )?>
+ |< ID: ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])*("_"(["a"-"z", "A"-"Z", "0"-"9"])*)?>
+
+
+}
+
+
+
+void Karloff () :
+{Token t;}
+{
+
+(
+  <MAIN> { System.out.println("Palavra reservada: main");}
+| <APARENTESES>{ System.out.println("Abre parênteses: ( ");}
+| <FPARENTESES>{ System.out.println("Fecha parênteses: ) ");}
+| <ACHAVES> { System.out.println("Abre chaves: {");}
+| <FCHAVES> { System.out.println("Fecha chaves: }");}
+| <PONTO_VIRGULA>{System.out.println("Ponto e Vírgula: ;");}
+| <ATTR>{System.out.println("Atribuição: = ");}
+| <VOID>{System.out.println("Palavra reservada: void");}
+| <FLOAT>{System.out.println("Palavra reservada: float");}
+| <BOOLEAN>{System.out.println("Palavra reservada:  boolean" );}
+| <WHILE>{System.out.println("Palavra reservada: while");}
+| <FUNCTION>{System.out.println("Palavra reservada: fun");}
+| <RETURN>{System.out.println("Palavra reservada:  return" );}
+| <IF>{System.out.println("Palavra reservada:  if" );}
+| <SOMA>{System.out.println("Palavra reservada:  +" );}
+| <SUB>{System.out.println("Palavra reservada:  -" );}
+| <MULT>{System.out.println("Palavra reservada:  *" );}
+| <DIV>{System.out.println("Palavra reservada:  /" );}
+| <AND>{System.out.println("Palavra reservada:  &" );}
+| <OR>{System.out.println("Palavra reservada:  |" );}
+| <MENORQ>{System.out.println("Palavra reservada:  <" );}
+| <MAIORQ>{System.out.println("Palavra reservada:  >" );}
+| <EQUAL>{System.out.println("Palavra reservada:  ==" );}
+| <TRUE>{System.out.println("palavra reservada: true");}
+| <FALSE>{System.out.println("palavra reservada: false");}
+| <VIRGULA>{System.out.println("palavra reservada: ,");}
+| t=<NUM> { System.out.println("Número: "+ t.image);}
+| t=<ID> { System.out.println("Identificador: "+ t.image);}
+)*
+<EOF> 
+
+
+}
+
+
+
+
+

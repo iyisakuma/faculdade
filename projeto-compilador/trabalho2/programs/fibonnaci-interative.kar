@@ -1,0 +1,23 @@
+void main () {
+    printOut fibonnaci(3);
+}
+
+
+fun fibonnaci(float n){
+    float counter;
+    float result;
+    float aux1 = 1;
+    float aux2 = 0;
+
+    counter = 0;
+
+    while(counter < n){
+        result = aux1 + aux2;
+        aux2 = aux1;
+        aux1 = result;
+        counter = counter + 1;
+    }
+
+    return result;
+    
+}
