@@ -88,7 +88,7 @@ Main Main () :
   return new Main(varDecl, comandos);
  }
 }
-
+//VARDECL -> VARDECL "newVar" TIPO TOKEN_id ";" | vazio
 ArrayList<VarDecl>  VarDecl() :
 {String var = null; String tipo = null; ArrayList<VarDecl> listaVarDecl = new ArrayList();}
 {
@@ -129,7 +129,7 @@ Comando Comando() :
 }
 {
    (
-     var=<ID> comando=Comando_(var.image, resultado)
+     resultado = Atribuicao()
 |   resultado = Cond()
 |  resultado = Loop()
 |  resultado  = Return()
@@ -140,25 +140,31 @@ Comando Comando() :
   {return resultado;}  
 }
 
-// COMANDO’ -> "=" COMANDO’ | "(" LISTAEXP? ")"  ";" |  = "readInput" "(" ")" ";"
-Comando Comando_ (String var, Comando result) :
-{ ArrayList<Exp> exps = null;}
-{
-    (
-        <ATRIB> Comando_(var, result)
-        | <APAR> (exps=ListaExp())? <FPAR> <PV> {result = new CChamadaFun(0, var, exps);}
-        | <ATRIB> com__ = <READ> <APAR><FPAR> <PV> {result = new CReadInput(0, var);}
-    )
+
+//
+// COMANDO ->TOKEN_id "=" EXP ";" | TOKEN_id = "readInput" "(" ")" ";" | TOKEN_id "(" LISTAEXP? ")" ";"
+void Atribuicao() : 
+{String var = null;
+  Comando c = null;
+  Exp e = null;
+  ArrayList<Exp> listaE = new ArrayList();
 }
-
-
-//Perguntar
-//void Atribuicao() : 
-//{}
-//{
+{
   
- // <ID> (<ATRIB> (Exp() <PV> | <READ> <APAR> <FPAR>) | <APAR> (ListaExp())? <FPAR> <PV>)
-//}
+  var = <ID> (<ATRIB> ( e = Exp() <PV>{
+    c = new CAtribuicao(0, var.image, e);
+  } 
+  | <READ> <APAR> <FPAR>) {
+    c = new CReadInput(0, var.image);
+  }
+  | <APAR> (listaE = ListaExp())? <FPAR> <PV>){
+    c = new CChamadaFun(0, var.image, listaE);
+  }
+
+  {
+    return c;
+  }
+}
 
 // | "if" EXP "then" "{" SEQCOMANDOS "}" ";"
 void Cond() :
