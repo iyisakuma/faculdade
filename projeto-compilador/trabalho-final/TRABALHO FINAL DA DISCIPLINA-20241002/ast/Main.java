@@ -21,6 +21,6 @@ public class Main{
         for (VarDecl decVar : this.vars) {
             stringBuilder.append(decVar).append("\n");
         }
-        return stringBuilder.append(this.coms).append("}\n").toString();
+        return stringBuilder.append(this.coms.stream().map(Comando::toString).reduce("", (acc, currVal) -> acc + "\n" + currVal)).append("}\n").toString();
     }
 }

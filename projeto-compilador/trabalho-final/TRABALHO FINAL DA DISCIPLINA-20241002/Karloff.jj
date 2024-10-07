@@ -8,7 +8,11 @@ public class Karloff {
     
     Karloff analisador = new Karloff(new FileInputStream(args[0]));
     Prog arv =analisador.Karloff();
-    print(arv);
+    FileWriter file = new FileWriter("./KarloffTeste.java");
+    PrintWriter print = new PrintWriter(file);
+    print.printf(tree.toString());
+    file.close();
+    System.out.println(arv);
   }
 
 }
@@ -190,7 +194,7 @@ void Print() :
 //Perguntar
 //EXP -> EXP´ (OP EXP ")" )* 
 Exp Exp() :
-{}
+{Exp e = null;}
 {
 
  ExpL() (Op() ExpL())*
@@ -236,7 +240,7 @@ void Fator() :
  }
 }
 //OP -> "+" | "-" | "*" | "/" | "&" | "|" | "<" | ">" | "=="
-void Op() :
+String Op() :
 {String op = null;}
 {
 
