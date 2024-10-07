@@ -66,16 +66,16 @@ TOKEN :
 
 
 Prog Karloff () :
-{Main main = null; ArrayList<Fun>  listaFuncao}
+{Main main = null; ArrayList<Fun>  listaFuncao;}
 {
 
-  main  = Main() (listaFuncao = Func())? <EOF> 
+  main  = Main() listaFuncao = Func() <EOF> 
   {return fun == null ? new Prog(main) : new Prog(main, listaFuncao);}
 
 }
 
 Main Main () :
-{ArrayList<VarDecl>  varDecl = null; ArrayList<Comando> comandos = null }
+{ArrayList<VarDecl>  varDecl = null; ArrayList<Comando> comandos = null ;}
 {
 
  <VOID> <MAIN> <APAR> <FPAR> <ACHAVES> varDecl = VarDecl() comandos=SeqComandos() <FCHAVES> 
@@ -86,27 +86,26 @@ Main Main () :
 }
 
 ArrayList<VarDecl>  VarDecl() :
-{String var = null; String tipo = null; ArrayList<VarDecl> listaVarDecl = new ArrayList<>();}
+{String var = null; String tipo = null; ArrayList<VarDecl> listaVarDecl = new ArrayList();}
 {
 
- (<VAR> tipo = Tipo() var=<ID> <PV>){listaVarDecl.add(new VarDecl(tipo, var.image));}*
- return{listaVarDecl;}
+ (<VAR> tipo = Tipo() var=<ID> <PV>{listaVarDecl.add(new VarDecl(tipo, var.image));})*
+ {return listaVarDecl;}
 }
-
+//TIPO -> "float" | "boolean" | "void"
 String  Tipo() :
 {String tipo = null;}
 {
-
-  <FLOAT>{tipo = "float"}
-| <BOOL>{tipo = "boolean"}
-| <VOID>{tipo = "void"} 
+  <FLOAT>{tipo = "float";}
+| <BOOL>{tipo = "boolean";}
+| <VOID>{tipo = "void";} 
   {return tipo;}
 
 }
 
 // SEQCOMANDOS ->  COMANDO +
 ArrayList<Comando> SeqComandos() :
-{ArrayList<Comando> comandos = null; Comando c = null}
+{ArrayList<Comando> comandos = null; Comando c = null;}
 {
 
  (c = Comando(){comandos.add(c);})+
@@ -126,7 +125,7 @@ Comando Comando() :
 }
 {
    (
-     var=<ID> comando_ = Comando_(var.image){ resultado = comando_}
+     var=<ID> comando=Comando_(var.image, resultado)
 |   resultado = Cond()
 |  resultado = Loop()
 |  resultado  = Return()
@@ -137,16 +136,15 @@ Comando Comando() :
   {return resultado;}  
 }
 
-// COMANDO’ -> "=" COMANDO’’ | "(" LISTAEXP? ")"  ";" |  = "readInput" "(" ")" ";"
-Comando Comando_ (String var) :
-{Comando result = null; Comando com__ = null; ArrayList<Exp> exps = null;}
+// COMANDO’ -> "=" COMANDO’ | "(" LISTAEXP? ")"  ";" |  = "readInput" "(" ")" ";"
+Comando Comando_ (String var, Comando result) :
+{ ArrayList<Exp> exps = null;}
 {
     (
-        <ATRIB> com__=Comando__(var) {result = com__;}
+        <ATRIB> Comando_(var, result)
         | <APAR> (exps=ListaExp())? <FPAR> <PV> {result = new CChamadaFun(0, var, exps);}
-        | <ATRIB> com__ = <READ> <APAR><FPAR> <PV> {result = new CReadInput(0, var)}
+        | <ATRIB> com__ = <READ> <APAR><FPAR> <PV> {result = new CReadInput(0, var);}
     )
-    {return result;}
 }
 
 
@@ -207,7 +205,7 @@ void ExpL() :
 }
 // FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")"
 //| TOKEN_numliteral | "true" | "false"
-void Fator()
+void Fator() :
 {
   ArratList<Exp> exps = null; 
   String var = null;
@@ -255,12 +253,12 @@ void Op() :
 }
 //LISTAEXP -> EXP  LISTAEXP´ 
 ArratList<Exp> ListaExp() :
-{Exp e = null; } ArrayList<Exp> lista = new ArrayList();
+{Exp e = null;  ArrayList<Exp> lista = new ArrayList();}
 {
 
  e = Exp() {
-  lista.add(e)
- }(ListaExpL(lista))*
+  lista.add(e);
+ }ListaExpL(lista)
 
  {return lista;}
 
@@ -274,8 +272,10 @@ void ListaExpL( ArrayList<Exp> lista) :
 }
 //LISTAARG -> TIPO TOKEN_id  LISTAARG´ 
 ArrayList<ParamFormalFun>  ListaArg() :
-{String tipo = null ; String var =  null;
-  ArrayList<ParamFormalFun> listaArg = new ArrayList<>();}
+{
+  String tipo = null ;
+  String var =  null;
+  ArrayList<ParamFormalFun> listaArg = new ArrayList();}
 {
 
  (tipo = Tipo()  var = <ID> {
@@ -296,10 +296,10 @@ void ListaArgL(ArrayList<ParamFormalFun> listaArg ) :
 }
 //FUNC ->  FUNC´ 
 ArrayList<Fun>  Func() :
-{ArrayList<Fun> funs = new ArrayList<>();}
+{ArrayList<Fun> funs = new ArrayList();}
 {
 
-  (FuncL(funs))+
+  FuncL(funs)
 {
   return funs;
 }
@@ -314,7 +314,7 @@ ArrayList<VarDecl> varDecl = null;
 }
 {
   (<FUN> tipo = Tipo() var = <ID> <APAR> (args = ListaArg())? <FPAR> <ACHAVES> varDecl = VarDecl() comandos = SeqComandos() <FCHAVES> {
-    funs.add(new Fun(var.image, args, tipo , varDecl, comandos))
+    funs.add(new Fun(var.image, args, tipo , varDecl, comandos));
   } FuncL(funs))?
 }
 
