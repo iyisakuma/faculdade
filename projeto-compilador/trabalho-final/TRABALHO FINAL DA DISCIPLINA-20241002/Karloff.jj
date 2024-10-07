@@ -200,23 +200,29 @@ void Print() :
 //Perguntar
 //EXP -> EXP´ (OP EXP ")" )* 
 Exp Exp() :
-{Exp e = null;}
+{Exp e1 = null;
+ Exp e2 = null;
+  String op = null;
+}
 {
 
- ExpL() (Op() ExpL())*
-
+ e1 = ExpL() (op = Op() e2 = ExpL())*
+  {
+    return op == null ? e1 : new EOpExp(op, e1, e2);
+  }
 }
 //Perguntar
 //EXP´ -> "(" EXP OP EXP ")" | FATOR
-void ExpL() :
-{}
+Exp ExpL() :
+{Exp e;}
 {
-   <APAR> Exp() <FPAR>
- | Fator()
+   <APAR> e = Exp() <FPAR>
+ | e = Fator()
+ {return e;}
 }
 // FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")"
 //| TOKEN_numliteral | "true" | "false"
-void Fator() :
+Exp Fator() :
 {
   ArratList<Exp> exps = null; 
   String var = null;
@@ -301,8 +307,7 @@ void ListaArgL(ArrayList<ParamFormalFun> listaArg ) :
 {
   <VIRGULA> tipo = Tipo() var = <ID>{
     listaArg.add(new ParamFormalFun(tipo, var.image));
-  }
-  (ListaArgL(listaArg))?
+  } (ListaArgL(listaArg))?
 
 }
 //FUNC ->  FUNC´ 

@@ -249,8 +249,10 @@ public class Karloff implements KarloffConstants {
 //Perguntar
 //EXP -> EXP´ (OP EXP ")" )* 
   static final public Exp Exp() throws ParseException {
- Exp e = null;
-    ExpL();
+ Exp e1 = null;
+ Exp e2 = null;
+  String op = null;
+    e1 = ExpL();
     label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -269,36 +271,41 @@ public class Karloff implements KarloffConstants {
         jj_la1[7] = jj_gen;
         break label_3;
       }
-      Op();
-      ExpL();
+      op = Op();
+      e2 = ExpL();
     }
+    {if (true) return op == null ? e1 : new EOpExp(op, e1, e2);}
+    throw new Error("Missing return statement in function");
   }
 
 //Perguntar
 //EXP´ -> "(" EXP OP EXP ")" | FATOR
-  static final public void ExpL() throws ParseException {
+  static final public Exp ExpL() throws ParseException {
+ Exp e;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case APAR:
       jj_consume_token(APAR);
-      Exp();
+      e = Exp();
       jj_consume_token(FPAR);
       break;
     case TRUE:
     case FALSE:
     case NUM:
     case ID:
-      Fator();
+      e = Fator();
+  {if (true) return e;}
       break;
     default:
       jj_la1[8] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
 // FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")"
 //| TOKEN_numliteral | "true" | "false"
-  static final public void Fator() throws ParseException {
+  static final public Exp Fator() throws ParseException {
   ArratList<Exp> exps = null;
   String var = null;
   Float num = null;
@@ -351,6 +358,7 @@ public class Karloff implements KarloffConstants {
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
 //OP -> "+" | "-" | "*" | "/" | "&" | "|" | "<" | ">" | "=="
