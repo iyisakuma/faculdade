@@ -307,42 +307,16 @@ public class Karloff implements KarloffConstants {
     throw new Error("Missing return statement in function");
   }
 
-// FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")"
+// FATOR -> TOKEN_id´
 //| TOKEN_numliteral | "true" | "false"
   static final public Exp Fator() throws ParseException {
-  ArrayList<Exp> exps = null;
   Token var = null;
   Token num = null;
   Exp result = null;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case ID:
       var = jj_consume_token(ID);
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case APAR:
-        jj_consume_token(APAR);
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case APAR:
-        case TRUE:
-        case FALSE:
-        case NUM:
-        case ID:
-          exps = ListaExp();
-          break;
-        default:
-          jj_la1[9] = jj_gen;
-          ;
-        }
-        jj_consume_token(FPAR);
-        break;
-      default:
-        jj_la1[10] = jj_gen;
-        ;
-      }
-    if(exps == null){
-      result = new EVar(var.image);
-    }else{
-      result = new  EChamadaFun(var.image, exps);
-    }
+      result = Fator_(var.image);
       break;
     case NUM:
       num = jj_consume_token(NUM);
@@ -357,11 +331,39 @@ public class Karloff implements KarloffConstants {
     result = new EFalse();
       break;
     default:
-      jj_la1[11] = jj_gen;
+      jj_la1[9] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   {if (true) return result;}
+    throw new Error("Missing return statement in function");
+  }
+
+//FATOR’ →  "(" LISTAEXP? ")" | vazio
+  static final public Exp Fator_(String  var) throws ParseException {
+   ArrayList<Exp> exps = null; Token t = null;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case APAR:
+      t = jj_consume_token(APAR);
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case APAR:
+      case TRUE:
+      case FALSE:
+      case NUM:
+      case ID:
+        exps = ListaExp();
+        break;
+      default:
+        jj_la1[10] = jj_gen;
+        ;
+      }
+      jj_consume_token(FPAR);
+      break;
+    default:
+      jj_la1[11] = jj_gen;
+      ;
+    }
+                                           {if (true) return t == null ? new EVar(var) : new EChamadaFun(var, exps);}
     throw new Error("Missing return statement in function");
   }
 
@@ -533,10 +535,10 @@ public class Karloff implements KarloffConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x800,0x82100,0x78000,0x78000,0x3000200,0x3000200,0x4200,0x7cf00000,0x3000200,0x3000200,0x200,0x3000000,0x7cf00000,0x0,0x0,0x82100,0x0,};
+      jj_la1_0 = new int[] {0x800,0x82100,0x78000,0x78000,0x3000200,0x3000200,0x4200,0x7cf00000,0x3000200,0x3000000,0x3000200,0x200,0x7cf00000,0x0,0x0,0x82100,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x10,0x10,0x1c,0x18,0x0,0x0,0x18,0x18,0x0,0x18,0x0,0x2,0x2,0x0,0x1,};
+      jj_la1_1 = new int[] {0x0,0x0,0x10,0x10,0x1c,0x18,0x0,0x0,0x18,0x18,0x18,0x0,0x0,0x2,0x2,0x0,0x1,};
    }
 
   /** Constructor with InputStream. */

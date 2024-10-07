@@ -11,7 +11,7 @@ public class EFalse extends Exp{
 
 	@Override
 	public String toString() {
-		return "false";
+		return "false;";
 	}
 
 }

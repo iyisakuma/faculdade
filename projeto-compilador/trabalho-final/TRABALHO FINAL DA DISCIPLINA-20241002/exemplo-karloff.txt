@@ -1,7 +1,7 @@
 void main () {
     newVar float teste_AA09A;
-    abc();
-    teste_AA09A = 9.0;
+    teste_AA09A = abc();
+    teste_AA09A = 9.9;
     printOut teste_AA09A;
 }
 

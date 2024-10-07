@@ -13,7 +13,7 @@ public class EFloat extends Exp{
 
 	@Override
 	public String toString() {
-		return String.valueOf(value);
+		return String.valueOf(value) + ";";
 	}
 
 }

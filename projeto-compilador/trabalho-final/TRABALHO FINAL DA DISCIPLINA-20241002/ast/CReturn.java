@@ -14,6 +14,6 @@ public class CReturn extends Comando{
 	} 
 	@Override
 	public String toString() {
-		return "return " + exp.toString() + ";";
+		return "return " + exp.toString();
 	}
 }

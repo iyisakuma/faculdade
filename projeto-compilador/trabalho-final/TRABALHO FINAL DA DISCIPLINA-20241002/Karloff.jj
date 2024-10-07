@@ -232,37 +232,36 @@ Exp ExpL():
  | e = Fator())
  {return e;}
 }
-// FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")"
+// FATOR -> TOKEN_id´
 //| TOKEN_numliteral | "true" | "false"
 Exp Fator() :
 {
-  ArrayList<Exp> exps = null; 
   Token var = null;
   Token num = null;
   Exp result = null;
 }
 {
-  (var = <ID> (<APAR> (exps = ListaExp())? <FPAR>)?{
-    if(exps == null){
-      result = new EVar(var.image);
-    }else{
-      result = new  EChamadaFun(var.image, exps);
-    }
-  }
- |num =  <NUM> {
+  ((var = <ID>  result = Fator_(var.image))
+ |(num =  <NUM> {
     result = new EFloat(Float.parseFloat(num.image));
- }
- | <TRUE>{
+ })
+ | (<TRUE>{
     result = new ETrue();
-
- }
- | <FALSE>{
+ })
+ | (<FALSE>{
     result = new EFalse();
- }
+ })
   )
  {
   return result;
  }
+}
+
+//FATOR’ →  "(" LISTAEXP? ")" | vazio
+Exp Fator_ (String  var) :
+{  ArrayList<Exp> exps = null; Token t = null;}
+{
+    (t=<APAR> (exps=ListaExp())? <FPAR>)? {return t == null ? new EVar(var) : new EChamadaFun(var, exps);}
 }
 //OP -> "+" | "-" | "*" | "/" | "&" | "|" | "<" | ">" | "=="
 String Op() :

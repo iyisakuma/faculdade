@@ -13,7 +13,7 @@ public class EVar extends Exp{
 
 	@Override
 	public String toString() {
-		return var;
+		return var + ";";
 	}
 
 }
