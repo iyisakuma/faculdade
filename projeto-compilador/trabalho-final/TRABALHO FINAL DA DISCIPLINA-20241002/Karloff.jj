@@ -148,16 +148,20 @@ Comando Atribuicao() :
   ArrayList<Exp> listaE = new ArrayList<Exp>();
 }
 {
-  (var = <ID> 
-  <ATRIB>(
+  (var = <ID> (
+    (<ATRIB>(
      ( e = Exp() <PV>{
         c = new CAtribuicao(0, var.image, e);
       })
       | (<READ><APAR> <FPAR> <PV>{
         c = new CReadInput(0, var.image);
       })
+    ))
+    | (<APAR> (listaE = ListaExp())? <FPAR> <PV>)  {
+      c = new CChamadaFun(0, var.image, listaE);
+    }
     )
- )
+  )
 
   //(var = <ID> 
    // (<ATRIB> ( e = Exp() <PV>{
