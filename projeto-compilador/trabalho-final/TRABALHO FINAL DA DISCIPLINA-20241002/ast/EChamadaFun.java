@@ -12,4 +12,9 @@ public class EChamadaFun extends Exp{
 	  this.args = args;
 	} 
 
+   	 @Override
+	 public String toString() {
+		if (this.args == null) return this.fun + "()";
+        return this.fun + "(" + args.stream().map(Exp::toString).reduce("",  (acc, currVal) -> acc + " "+currVal) + ")";
+	 }
 }

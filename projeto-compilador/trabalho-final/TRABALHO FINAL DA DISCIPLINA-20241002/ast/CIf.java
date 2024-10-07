@@ -14,4 +14,9 @@ public class CIf extends Comando{
 	  this.bloco = bloco;
 	} 
 
+	@Override
+    public String toString() {
+        return "if (" + this.exp + ") {\n" + this.bloco.stream().map(Comando::toString).reduce("", (acc, currval) -> acc + "\n"+ currval) + "}";
+    }
+
 }

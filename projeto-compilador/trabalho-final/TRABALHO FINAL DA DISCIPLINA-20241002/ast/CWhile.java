@@ -14,4 +14,8 @@ public class CWhile extends Comando{
 	  this.bloco = bloco;
 	} 
 
+	@Override
+    public String toString() {
+	return "while (" + this.exp + ") {\n" + this.bloco.stream().map(Comando::toString).reduce("", (acc, currVal) -> acc + "\n" + currVal) + "}";
+    }
 }

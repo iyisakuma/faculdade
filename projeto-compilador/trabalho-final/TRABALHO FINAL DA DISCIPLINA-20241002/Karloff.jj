@@ -196,6 +196,7 @@ Exp Exp() :
  ExpL() (Op() ExpL())*
 
 }
+//Perguntar
 //EXP´ -> "(" EXP OP EXP ")" | FATOR
 void ExpL() :
 {}
