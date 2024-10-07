@@ -7,11 +7,10 @@ public class Karloff {
   public static void main(String args[]) throws ParseException,IOException {
     
     Karloff analisador = new Karloff(new FileInputStream(args[0]));
-    Prog arv =analisador.Karloff();
-    FileWriter file = new FileWriter("./KarloffTeste.java");
-    PrintWriter print = new PrintWriter(file);
-    print.printf(tree.toString());
-    file.close();
+    Prog arv = analisador.Karloff();
+    //FileWriter file = new FileWriter("./KarloffTeste.java");
+    //PrintWriter print = new PrintWriter(file);
+    //file.close();
     System.out.println(arv);
   }
 
@@ -74,7 +73,7 @@ Prog Karloff () :
 {
 
   main  = Main() listaFuncao = Func() <EOF> 
-  {return fun == null ? new Prog(main) : new Prog(main, listaFuncao);}
+  {return new Prog(main, listaFuncao);}
 
 }
 
@@ -90,7 +89,7 @@ Main Main () :
 }
 //VARDECL -> VARDECL "newVar" TIPO TOKEN_id ";" | vazio
 ArrayList<VarDecl>  VarDecl() :
-{String var = null; String tipo = null; ArrayList<VarDecl> listaVarDecl = new ArrayList();}
+{Token var = null; String tipo = null; ArrayList<VarDecl> listaVarDecl = new ArrayList<VarDecl>();}
 {
 
  (<VAR> tipo = Tipo() var=<ID> <PV>{listaVarDecl.add(new VarDecl(tipo, var.image));})*
@@ -100,16 +99,16 @@ ArrayList<VarDecl>  VarDecl() :
 String  Tipo() :
 {String tipo = null;}
 {
-  <FLOAT>{tipo = "float";}
+ ( <FLOAT>{tipo = "float";}
 | <BOOL>{tipo = "boolean";}
-| <VOID>{tipo = "void";} 
+| <VOID>{tipo = "void";} )
   {return tipo;}
 
 }
 
 // SEQCOMANDOS ->  COMANDO +
 ArrayList<Comando> SeqComandos() :
-{ArrayList<Comando> comandos = null; Comando c = null;}
+{ArrayList<Comando> comandos = new ArrayList<Comando>(); Comando c = null;}
 {
 
  (c = Comando(){comandos.add(c);})+
@@ -123,7 +122,6 @@ ArrayList<Comando> SeqComandos() :
 // | "printOut" EXP ";"
 Comando Comando() :
 {
-  String var = null;
   Comando resultado = null;
   Comando comando_ = null;
 }
@@ -143,46 +141,56 @@ Comando Comando() :
 
 //
 // COMANDO ->TOKEN_id "=" EXP ";" | TOKEN_id = "readInput" "(" ")" ";" | TOKEN_id "(" LISTAEXP? ")" ";"
-void Atribuicao() : 
-{String var = null;
+Comando Atribuicao() : 
+{Token var = null;
   Comando c = null;
   Exp e = null;
-  ArrayList<Exp> listaE = new ArrayList();
+  ArrayList<Exp> listaE = new ArrayList<Exp>();
 }
 {
-  
-  var = <ID> (<ATRIB> ( e = Exp() <PV>{
-    c = new CAtribuicao(0, var.image, e);
-  } 
-  | <READ> <APAR> <FPAR>) {
-    c = new CReadInput(0, var.image);
-  }
-  | <APAR> (listaE = ListaExp())? <FPAR> <PV>){
-    c = new CChamadaFun(0, var.image, listaE);
-  }
+  (var = <ID> 
+  <ATRIB>(
+     ( e = Exp() <PV>{
+        c = new CAtribuicao(0, var.image, e);
+      })
+      | (<READ><APAR> <FPAR> <PV>{
+        c = new CReadInput(0, var.image);
+      })
+    )
+ )
 
+  //(var = <ID> 
+   // (<ATRIB> ( e = Exp() <PV>{
+  //    c = new CAtribuicao(0, var.image, e);
+  //  } 
+  //  | <READ> <APAR> <FPAR>) {
+      // c = new CReadInput(0, var.image);
+      // })
+      // | <APAR> (listaE = ListaExp())? <FPAR> <PV>{
+      //   c = new CChamadaFun(0, var.image, listaE);
+      // })
   {
     return c;
   }
 }
 
 // | "if" EXP "then" "{" SEQCOMANDOS "}" ";"
-void Cond() :
-{Exp e = null; ArrayList<Comandos> comandos = null;}
+Comando Cond() :
+{Exp e = null; ArrayList<Comando> comandos = null;}
 {
   <IF> e = Exp() <THEN> <ACHAVES> comandos = SeqComandos() <FCHAVES> <PV> 
   {return new CIf(0,  e, comandos);}
 }
 // | "while" EXP "{" SEQCOMANDOS "}" ";"
-void Loop() :
-{Exp e = null; ArrayList<Comandos> comandos = null;}
+Comando Loop() :
+{Exp e = null; ArrayList<Comando> comandos = null;}
 {
   <WHILE> e = Exp() <ACHAVES> comandos = SeqComandos() <FCHAVES> <PV>
   {return new CWhile(0, e, comandos);}
 }
 
 // | "return" EXP ";"
-void Return() :
+Comando Return() :
 {Exp e = null;}
 {
   <RETURN> e = Exp() <PV>
@@ -190,7 +198,7 @@ void Return() :
 }
 
 // | "printOut" EXP ";"
-void Print() :
+Comando Print() :
 {Exp e = null;}
 {
   <PRINT> e = Exp() <PV>
@@ -213,24 +221,24 @@ Exp Exp() :
 }
 //Perguntar
 //EXP´ -> "(" EXP OP EXP ")" | FATOR
-Exp ExpL() :
+Exp ExpL():
 {Exp e;}
 {
-   <APAR> e = Exp() <FPAR>
- | e = Fator()
+   (<APAR> e = Exp() <FPAR>
+ | e = Fator())
  {return e;}
 }
 // FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")"
 //| TOKEN_numliteral | "true" | "false"
 Exp Fator() :
 {
-  ArratList<Exp> exps = null; 
-  String var = null;
-  Float num = null;
+  ArrayList<Exp> exps = null; 
+  Token var = null;
+  Token num = null;
   Exp result = null;
 }
 {
-  var = <ID> (<APAR> (exps = ListaExp())? <FPAR>)?{
+  (var = <ID> (<APAR> (exps = ListaExp())? <FPAR>)?{
     if(exps == null){
       result = new EVar(var.image);
     }else{
@@ -238,7 +246,7 @@ Exp Fator() :
     }
   }
  |num =  <NUM> {
-    result = new EFloat(num.image);
+    result = new EFloat(Float.parseFloat(num.image));
  }
  | <TRUE>{
     result = new ETrue();
@@ -247,6 +255,7 @@ Exp Fator() :
  | <FALSE>{
     result = new EFalse();
  }
+  )
  {
   return result;
  }
@@ -269,8 +278,8 @@ String Op() :
 
 }
 //LISTAEXP -> EXP  LISTAEXP´ 
-ArratList<Exp> ListaExp() :
-{Exp e = null;  ArrayList<Exp> lista = new ArrayList();}
+ArrayList<Exp> ListaExp() :
+{Exp e = null;  ArrayList<Exp> lista = new ArrayList<Exp>();}
 {
 
  e = Exp() {
@@ -291,19 +300,19 @@ void ListaExpL( ArrayList<Exp> lista) :
 ArrayList<ParamFormalFun>  ListaArg() :
 {
   String tipo = null ;
-  String var =  null;
-  ArrayList<ParamFormalFun> listaArg = new ArrayList();}
+  Token var =  null;
+  ArrayList<ParamFormalFun> listaArg = new ArrayList<ParamFormalFun>();}
 {
 
  (tipo = Tipo()  var = <ID> {
   listaArg.add(new ParamFormalFun(tipo, var.image));
 
- }(ListaArgL(listaArg))*)
+ }(ListaArgL(listaArg)))
   {return listaArg;}
 }
 //LISTAARG´ -> "," TIPO TOKEN_id LISTAARG´
 void ListaArgL(ArrayList<ParamFormalFun> listaArg ) :
-{String tipo = null ; String var =  null;}
+{String tipo = null ; Token var =  null;}
 {
   <VIRGULA> tipo = Tipo() var = <ID>{
     listaArg.add(new ParamFormalFun(tipo, var.image));
@@ -312,7 +321,7 @@ void ListaArgL(ArrayList<ParamFormalFun> listaArg ) :
 }
 //FUNC ->  FUNC´ 
 ArrayList<Fun>  Func() :
-{ArrayList<Fun> funs = new ArrayList();}
+{ArrayList<Fun> funs = new ArrayList<Fun>();}
 {
 
   FuncL(funs)
@@ -323,10 +332,10 @@ ArrayList<Fun>  Func() :
 //FUN'-> "fun" TIPO TOKEN_id "(" LISTAARG? ")" "{" VARDECL SEQCOMANDOS "}" FUN' | vazio
 void FuncL(ArrayList<Fun> funs) : 
 {String tipo = null; 
-  String var = null;
-  ArrayList<ParamFormalFun> args;
-ArrayList<Comando> comandos =  null;
-ArrayList<VarDecl> varDecl = null;
+  Token var = null;
+  ArrayList<ParamFormalFun> args = new ArrayList<ParamFormalFun>();
+  ArrayList<Comando> comandos =  null;
+  ArrayList<VarDecl> varDecl = null;
 }
 {
   (<FUN> tipo = Tipo() var = <ID> <APAR> (args = ListaArg())? <FPAR> <ACHAVES> varDecl = VarDecl() comandos = SeqComandos() <FCHAVES> {

@@ -1,0 +1,9 @@
+void main () {
+    newVar float teste_AA09A;
+    teste_AA09A = abc();
+    printOut teste_AA09A;
+}
+
+fun float abc () { 
+    return 9.0;
+}

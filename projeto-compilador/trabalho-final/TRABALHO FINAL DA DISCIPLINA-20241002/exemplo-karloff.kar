@@ -1,0 +1,5 @@
+void main () {
+    newVar float teste_AA09A;
+    teste_AA09A = readInput();
+    printOut teste_AA09A;
+}
