@@ -1,0 +1,5 @@
+void main () {
+    float teste_AA09A;
+    teste_AA09A = 9.0;
+    printO0ut teste_AA09A;
+}
