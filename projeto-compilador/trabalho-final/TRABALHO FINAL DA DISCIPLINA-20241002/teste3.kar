@@ -1,19 +1,19 @@
 void main(){
     newVar float x;
-    x = 2;
-
     newVar float y;
     y = 4;
+    x = 2;
+
     
     if(soma(x, y) > 1) then {
         printOut false;
         return 1;
-    }
+    };
 
     printOut true;
     return 0;
 }
 
-fun soma(float x, float y){
+fun float soma(float x, float y){
     return x + y;
 }
