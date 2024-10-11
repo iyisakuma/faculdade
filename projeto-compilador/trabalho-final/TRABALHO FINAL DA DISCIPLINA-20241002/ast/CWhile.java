@@ -6,6 +6,7 @@ public class CWhile extends Comando{
 	public int linha;
 	public Exp exp;
 	public ArrayList<Comando> bloco;
+	public RemoveLastCharacter r = new RemoveLastCharacter();
 	
 	public CWhile(int linha,Exp exp, ArrayList<Comando> bloco)
 	{

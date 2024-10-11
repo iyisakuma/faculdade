@@ -1,10 +1,9 @@
 package ast;
 
-
 public class CReturn extends Comando{
 	public int linha;
 	public Exp exp;
-	
+	public RemoveLastCharacter r = new RemoveLastCharacter();
 	
 	public CReturn(int linha,Exp exp)
 	{

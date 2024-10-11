@@ -6,6 +6,7 @@ public class CIf extends Comando{
 	public int linha;
 	public Exp exp;
 	public ArrayList<Comando> bloco;
+	public RemoveLastCharacter r = new RemoveLastCharacter();
 	
 	public CIf(int linha,Exp exp, ArrayList<Comando> bloco)
 	{
