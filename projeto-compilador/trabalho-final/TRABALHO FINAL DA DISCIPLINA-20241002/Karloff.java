@@ -373,7 +373,7 @@ public class Karloff implements KarloffConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case PLUS:
       jj_consume_token(PLUS);
-          op = "+";
+           op = "+";
       break;
     case MINUS:
       jj_consume_token(MINUS);
@@ -406,13 +406,13 @@ public class Karloff implements KarloffConstants {
     case COMP:
       jj_consume_token(COMP);
           op = "==";
-  {if (true) return op;}
       break;
     default:
       jj_la1[12] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+  {if (true) return op;}
     throw new Error("Missing return statement in function");
   }
 

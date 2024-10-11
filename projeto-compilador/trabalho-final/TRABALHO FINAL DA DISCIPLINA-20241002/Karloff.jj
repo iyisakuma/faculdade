@@ -189,7 +189,7 @@ Comando Cond() :
 Comando Loop() :
 {Exp e = null; ArrayList<Comando> comandos = null;}
 {
-  <WHILE> e = Exp() <ACHAVES> comandos = SeqComandos() <FCHAVES> <PV>
+  (<WHILE> e = Exp() <ACHAVES> comandos = SeqComandos() <FCHAVES> <PV>)
   {return new CWhile(0, e, comandos);}
 }
 
@@ -268,7 +268,7 @@ String Op() :
 {String op = null;}
 {
 
-   <PLUS>{op = "+";}
+ (  <PLUS>{op = "+";}
  | <MINUS>{op = "-";}
  | <MULT>{op = "*";}
  | <DIV>{op = "/";}
@@ -277,6 +277,7 @@ String Op() :
  | <LESSER>{op = "<";}
  | <BIGGER>{op = ">";}
  | <COMP>{op = "==";}
+ )
  {return op;}
 
 }
