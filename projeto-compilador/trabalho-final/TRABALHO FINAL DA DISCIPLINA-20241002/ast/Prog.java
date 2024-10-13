@@ -12,7 +12,7 @@ public class Prog{
     }
     @Override
     public String toString() {
-        return "package org.test;\nimport java.util.Scanner;\npublic class KarloffTeste {\n\n"
+        return "package edu.teste;\nimport java.util.Scanner;\npublic class KarloffTeste {\n\n"
         + this.main + (this.fun == null ? "" : "\n" + this.fun.stream().map(Fun::toString).reduce("", (acc, currVal)-> acc + " "+ currVal)) + "\n}\n";//CORRIGIR O toString no fun
     }
 }

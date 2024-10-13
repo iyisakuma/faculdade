@@ -5,8 +5,6 @@ public class EOpExp extends Exp{
 	public String op;
 	public Exp arg1;
 	public Exp arg2;
-	public RemoveLastCharacter r = new RemoveLastCharacter();
-	
 	
 	public EOpExp(String op, Exp arg1, Exp arg2)
 	{
@@ -18,6 +16,7 @@ public class EOpExp extends Exp{
 
 	@Override
 	public String toString() {
-		return r.RemoveChar(arg1.toString()) + " " + op + " " + r.RemoveChar(arg2.toString());
+		
+		return arg1.toString() + " " + op + " " + arg2.toString();
 	}
 }

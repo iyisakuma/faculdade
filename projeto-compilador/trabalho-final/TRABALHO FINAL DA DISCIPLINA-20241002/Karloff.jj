@@ -8,9 +8,10 @@ public class Karloff {
     
     Karloff analisador = new Karloff(new FileInputStream(args[0]));
     Prog arv = analisador.Karloff();
-    //FileWriter file = new FileWriter("./KarloffTeste.java");
-    //PrintWriter print = new PrintWriter(file);
-    //file.close();
+    FileWriter file = new FileWriter("./edu/teste/KarloffTeste.java");
+    PrintWriter print = new PrintWriter(file);
+    print.println(arv.toString());
+    file.close();
     System.out.println(arv);
   }
 
@@ -311,10 +312,10 @@ ArrayList<ParamFormalFun>  ListaArg() :
  (tipo = Tipo()  var = <ID> {
   listaArg.add(new ParamFormalFun(tipo, var.image));
 
- }(ListaArgL(listaArg)))
+ }[(ListaArgL(listaArg))])
   {return listaArg;}
 }
-//LISTAARG´ -> "," TIPO TOKEN_id LISTAARG´
+//LISTAARG´ -> "," TIPO TOKEN_id LISTAARG´ | vazio
 void ListaArgL(ArrayList<ParamFormalFun> listaArg ) :
 {String tipo = null ; Token var =  null;}
 {

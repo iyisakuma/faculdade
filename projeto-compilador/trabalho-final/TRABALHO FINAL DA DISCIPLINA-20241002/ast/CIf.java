@@ -6,8 +6,6 @@ public class CIf extends Comando{
 	public int linha;
 	public Exp exp;
 	public ArrayList<Comando> bloco;
-	public RemoveLastCharacter r = new RemoveLastCharacter();
-	
 	public CIf(int linha,Exp exp, ArrayList<Comando> bloco)
 	{
 	  this.linha = linha;
@@ -17,7 +15,7 @@ public class CIf extends Comando{
 
 	@Override
     public String toString() {
-        return "if (" + this.exp + ") {\n" + this.bloco.stream().map(Comando::toString).reduce("", (acc, currval) -> acc + "\n"+ currval) + "}";
+        return "if (" + this.exp.toString().replace(";", "") + ") {\n" + this.bloco.stream().map(Comando::toString).reduce("", (acc, currval) -> acc + "\n"+ currval) + "}";
     }
 
 }

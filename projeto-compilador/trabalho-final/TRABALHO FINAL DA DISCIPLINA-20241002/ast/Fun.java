@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Fun{
 	public String nome;
@@ -33,6 +34,20 @@ public class Fun{
         return stringBuilder.toString();
     }
 	private String printParam(){
-		return this.params.stream().map(ParamFormalFun::toString).reduce("", (acc, currVal) -> acc + ", " + currVal);
+		//Caso a função nao possui nenhum parametro formal
+		if (this.params == null || params.isEmpty()) return "" ;
+		//Caso da função possuir apenas um parametro formal
+		if(params.size() == 1) return params.get(0).toString();
+		else{
+			String argString = "";
+			Iterator<ParamFormalFun> iterator = params.iterator();
+			while (iterator.hasNext()) {
+				argString += iterator.next().toString();
+				if (iterator.hasNext()) {
+					argString += " , ";
+				}
+			}
+			return argString;
+		}
 	}
 }

@@ -6,8 +6,6 @@ public class CWhile extends Comando{
 	public int linha;
 	public Exp exp;
 	public ArrayList<Comando> bloco;
-	public RemoveLastCharacter r = new RemoveLastCharacter();
-	
 	public CWhile(int linha,Exp exp, ArrayList<Comando> bloco)
 	{
 	  this.linha = linha;
@@ -17,6 +15,6 @@ public class CWhile extends Comando{
 
 	@Override
     public String toString() {
-	return "while (" + this.exp + ") {\n" + this.bloco.stream().map(Comando::toString).reduce("", (acc, currVal) -> acc + "\n" + currVal) + "}";
+	return "while (" + this.exp.toString()+ ") {\n" + this.bloco.stream().map(Comando::toString).reduce("", (acc, currVal) -> acc + "\n" + currVal) + "}";
     }
 }

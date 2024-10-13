@@ -3,8 +3,6 @@ package ast;
 public class CReturn extends Comando{
 	public int linha;
 	public Exp exp;
-	public RemoveLastCharacter r = new RemoveLastCharacter();
-	
 	public CReturn(int linha,Exp exp)
 	{
 	  this.linha = linha;
@@ -13,6 +11,6 @@ public class CReturn extends Comando{
 	} 
 	@Override
 	public String toString() {
-		return "return " + exp.toString();
+		return "return " + exp.toString() + ";";
 	}
 }

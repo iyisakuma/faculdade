@@ -1,0 +1,13 @@
+void main () {
+    newVar float n;
+    n = readInput();
+    printOut fibonnaci(n);
+}
+fun float fibonnaci(float n){
+    if( n < 2) then {
+        return 1;
+    };
+
+
+    return fibonnaci(n - 1 ) + fibonnaci(n - 2);
+}

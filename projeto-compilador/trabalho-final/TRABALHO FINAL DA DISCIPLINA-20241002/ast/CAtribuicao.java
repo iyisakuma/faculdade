@@ -15,7 +15,7 @@ public class CAtribuicao extends Comando{
 	
 	@Override
 	public String toString() {
-		return var + " = "  + exp.toString();
+		return var + " = "  + exp.toString() + ";";
 	}
 
 }

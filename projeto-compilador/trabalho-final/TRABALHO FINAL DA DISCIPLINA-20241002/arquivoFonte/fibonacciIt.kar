@@ -1,0 +1,25 @@
+void main () {
+    newVar float n;
+    n = readInput();
+    printOut fibonnaci(n);
+}
+
+fun float fibonnaci(float n){
+    newVar float counter;
+    newVar float result;
+    newVar float aux1;
+    newVar float aux2;
+    aux1 = 1;
+    aux2 = 0;
+    counter = 0;
+
+    while(counter < n){
+        result = aux1 + aux2;
+        aux2 = aux1;
+        aux1 = result;
+        counter = counter + 1;
+    };
+
+    return result;
+    
+}

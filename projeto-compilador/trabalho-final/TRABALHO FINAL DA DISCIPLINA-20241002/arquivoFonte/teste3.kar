@@ -7,11 +7,9 @@ void main(){
     
     if(soma(x, y) > 1) then {
         printOut false;
-        return 1;
     };
 
     printOut true;
-    return 0;
 }
 
 fun float soma(float x, float y){

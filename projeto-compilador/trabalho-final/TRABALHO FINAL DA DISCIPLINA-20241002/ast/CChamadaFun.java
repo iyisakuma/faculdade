@@ -16,7 +16,6 @@ public class CChamadaFun extends Comando{
 
 	@Override
 	 public String toString() {
-	System.out.println("vrau");
 		if (this.args == null || args.isEmpty()) return this.fun + "()";
         return this.fun + "(" + args.stream().map(Exp::toString).reduce("",  (acc, currVal) -> acc + " " +currVal) + ")";
 	 }

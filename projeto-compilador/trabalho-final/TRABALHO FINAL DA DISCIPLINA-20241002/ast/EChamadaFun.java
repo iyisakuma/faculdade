@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class EChamadaFun extends Exp{
 	public String fun;
@@ -15,6 +16,15 @@ public class EChamadaFun extends Exp{
    	 @Override
 	 public String toString() {
 		if (this.args == null) return this.fun + "();";
-        return this.fun + "(" + args.stream().map(Exp::toString).reduce("",  (acc, currVal) -> acc + " "+currVal) + ");";
+		else if(args.size() == 1) return this.fun + "(" + args.get(0) + ")";
+		String argString = "";
+		Iterator<Exp> iterator = args.iterator();
+		while (iterator.hasNext()) {
+			argString += iterator.next().toString();
+			if (iterator.hasNext()) {
+				argString += " , ";
+			}
+		}
+        return this.fun + "(" + argString +  ");";
 	 }
 }
